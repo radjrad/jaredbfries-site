@@ -106,6 +106,7 @@
   blockquote{font-family:'Young Serif',serif;font-size:clamp(18px,2.3vw,22px);line-height:1.5}
   .attrib{margin-top:22px;font-family:'Spline Sans Mono',monospace;font-size:13px;letter-spacing:.05em;color:var(--sage)}
   .attrib b{color:var(--ink);font-weight:500}
+  .quotecard .client-logo{display:block;height:52px;width:auto;margin-bottom:26px}
 
   /* process */
   .process{padding:0 0 76px}
@@ -124,8 +125,6 @@
     display:flex;align-items:center;justify-content:center;
     font-family:'Young Serif',serif;font-size:44px;color:var(--sage);
   }
-  /* To use a real photo: replace the .portrait div with
-     <img class="portrait" src="headshot.webp" alt="Jared B. Fries" style="object-fit:cover;width:100%"> */
   .about h3{font-family:'Young Serif',serif;font-weight:400;font-size:clamp(24px,3vw,30px);margin-bottom:18px}
   .about p{max-width:62ch;margin-bottom:16px}
   .about .grove{color:var(--sage);font-style:italic}
@@ -223,6 +222,7 @@
     <section class="proof reveal">
       <span class="tab">Trusted by</span>
       <div class="quotecard">
+        <img class="client-logo" src="tiny-giants-logo.png" alt="Tiny Giants Schools">
         <blockquote>Before working with Jared, I was losing hours every month to manual work like invoicing, rosters, and family communications. Jared built new systems with our team, not for us, and months later everything still runs without him. I'm back on the floor with kids, enrollment feels warmer to families, and we avoided thousands of dollars of software subscriptions.</blockquote>
         <p class="attrib"><b>Jen Silver</b> · Founder &amp; Executive Director, Tiny Giants Schools</p>
       </div>
@@ -257,7 +257,7 @@
     <section class="about reveal">
       <span class="tab">About the founder</span>
       <div class="about-grid">
-        <div class="portrait" role="img" aria-label="Jared B. Fries">JBF</div>
+        <img class="portrait" src="headshot.jpg" alt="Jared B. Fries" style="object-fit:cover;object-position:top;width:100%">
         <div>
           <h3>Operator. Educator. System builder.</h3>
           <p>Jared B. Fries has spent 15+ years building the systems that help organizations grow — across classrooms, school leadership, district administration, and small business operations.</p>
