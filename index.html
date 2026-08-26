@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Systems that protect the warmth | Jared B. Fries Consulting</title>
+<meta name="description" content="Jared B. Fries helps small business owners replace duct-taped processes and expensive software subscriptions with calm, practical systems that run quietly in the background.">
+<meta property="og:title" content="Systems that protect the warmth | Jared B. Fries Consulting">
+<meta property="og:description" content="Calm, practical operations systems for small business owners and mission-driven organizations.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://jaredbfries.com/">
+<link rel="canonical" href="https://jaredbfries.com/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Karla:ital,wght@0,400;0,500;0,700;1,400&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#26302b;          /* deep green-black: text */
+    --ground:#f6f4ed;       /* warm paper */
+    --panel:#efece1;        /* slightly deeper paper for panels */
+    --rule:#d8d4c5;         /* ledger rule lines */
+    --marigold:#c98a1b;     /* accent: highlights, links */
+    --sage:#5d6f57;         /* secondary: labels, quiet accents */
+    --max:1060px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    .reveal{opacity:1 !important;transform:none !important;transition:none !important}
+  }
+  body{
+    font-family:'Karla',sans-serif;
+    background:var(--ground);
+    color:var(--ink);
+    line-height:1.6;
+    font-size:17px;
+  }
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 24px}
+  a{color:var(--marigold);text-decoration-thickness:1.5px;text-underline-offset:3px}
+  a:hover{color:var(--ink)}
+  :focus-visible{outline:3px solid var(--marigold);outline-offset:3px;border-radius:2px}
+
+  /* filing-tab section labels — the site's organizing motif */
+  .tab{
+    display:inline-block;
+    font-family:'Spline Sans Mono',monospace;
+    font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--sage);
+    border:1px solid var(--rule);
+    border-bottom:none;
+    background:var(--panel);
+    padding:7px 16px 5px;
+    border-radius:8px 8px 0 0;
+    position:relative;top:1px;
+  }
+  section{border-top:1px solid var(--rule)}
+
+  h1,h2{font-family:'Young Serif',serif;font-weight:400;line-height:1.12;letter-spacing:-0.01em}
+
+  /* header */
+  header{position:sticky;top:0;background:color-mix(in srgb,var(--ground) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--rule);z-index:10}
+  .nav{display:flex;align-items:baseline;justify-content:space-between;padding:16px 24px;max-width:var(--max);margin:0 auto}
+  .brand{font-family:'Young Serif',serif;font-size:19px;color:var(--ink);text-decoration:none}
+  .brand span{font-family:'Spline Sans Mono',monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--sage);margin-left:8px}
+  .nav .loc{font-family:'Spline Sans Mono',monospace;font-size:12px;color:var(--sage);letter-spacing:.06em}
+
+  /* hero */
+  .hero{padding:88px 0 72px}
+  .hero .kicker{font-family:'Spline Sans Mono',monospace;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--sage);margin-bottom:22px}
+  .hero h1{font-size:clamp(38px,6vw,64px);max-width:15ch}
+  .hero h1 .hl{position:relative;white-space:nowrap}
+  .hero h1 .hl svg{position:absolute;left:0;bottom:-0.12em;width:100%;height:.28em;overflow:visible}
+  .hero h1 .hl path{fill:none;stroke:var(--marigold);stroke-width:5;stroke-linecap:round}
+  .hero p.lede{margin-top:26px;font-size:19px;max-width:56ch}
+  .cta{
+    display:inline-block;margin-top:34px;
+    font-family:'Spline Sans Mono',monospace;font-size:14px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--ground);background:var(--ink);text-decoration:none;
+    padding:15px 26px;border-radius:4px;border:1.5px solid var(--ink);
+  }
+  .cta:hover{background:var(--marigold);border-color:var(--marigold);color:var(--ink)}
+  .cta.ghost{background:transparent;color:var(--ink)}
+  .cta.ghost:hover{background:var(--ink);color:var(--ground)}
+
+  .thesis{padding:40px 0 64px}
+  .thesis p{font-family:'Young Serif',serif;font-size:clamp(20px,2.6vw,26px);line-height:1.45;max-width:34ch;color:var(--sage)}
+  .thesis p b{color:var(--ink);font-weight:400}
+
+  /* services: ledger list */
+  .services{padding:0 0 76px}
+  .svc{display:grid;grid-template-columns:64px 1fr 1.4fr;gap:20px;padding:30px 0;border-bottom:1px solid var(--rule);align-items:baseline}
+  .svc:first-of-type{border-top:1px solid var(--rule);margin-top:34px}
+  .svc .idx{font-family:'Spline Sans Mono',monospace;font-size:13px;color:var(--sage)}
+  .svc h3{font-family:'Young Serif',serif;font-weight:400;font-size:22px;line-height:1.25}
+  .svc p{color:#4a544d}
+  .svc:hover{background:var(--panel)}
+
+  /* proof */
+  .proof{padding:0 0 76px}
+  .quotecard{
+    margin-top:34px;background:var(--panel);border:1px solid var(--rule);border-radius:6px;
+    padding:42px 44px;max-width:820px;position:relative;
+  }
+  .quotecard:before{content:"“";font-family:'Young Serif',serif;font-size:84px;line-height:0;color:var(--marigold);position:absolute;top:44px;left:-4px;transform:translateX(-50%)}
+  blockquote{font-family:'Young Serif',serif;font-size:clamp(18px,2.3vw,22px);line-height:1.5}
+  .attrib{margin-top:22px;font-family:'Spline Sans Mono',monospace;font-size:13px;letter-spacing:.05em;color:var(--sage)}
+  .attrib b{color:var(--ink);font-weight:500}
+
+  /* process */
+  .process{padding:0 0 76px}
+  .steps{margin-top:34px;display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--rule);border-radius:6px;overflow:hidden}
+  .step{padding:28px 24px;border-right:1px solid var(--rule);background:var(--ground)}
+  .step:last-child{border-right:none}
+  .step .idx{font-family:'Spline Sans Mono',monospace;font-size:12px;color:var(--marigold);letter-spacing:.12em}
+  .step h3{font-family:'Young Serif',serif;font-weight:400;font-size:19px;margin:10px 0 8px}
+  .step p{font-size:15px;color:#4a544d}
+
+  /* about */
+  .about{padding:0 0 76px}
+  .about-grid{display:grid;grid-template-columns:200px 1fr;gap:44px;margin-top:34px;align-items:start}
+  .portrait{
+    aspect-ratio:4/5;background:var(--panel);border:1px solid var(--rule);border-radius:6px;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Young Serif',serif;font-size:44px;color:var(--sage);
+  }
+  /* To use a real photo: replace the .portrait div with
+     <img class="portrait" src="headshot.webp" alt="Jared B. Fries" style="object-fit:cover;width:100%"> */
+  .about h3{font-family:'Young Serif',serif;font-weight:400;font-size:clamp(24px,3vw,30px);margin-bottom:18px}
+  .about p{max-width:62ch;margin-bottom:16px}
+  .about .grove{color:var(--sage);font-style:italic}
+
+  /* contact */
+  .contact{padding:0 0 88px}
+  .contact h2{font-size:clamp(28px,4vw,40px);margin-top:34px;max-width:18ch}
+  .contact .sub{margin-top:16px;max-width:56ch}
+  form{margin-top:36px;max-width:560px;display:grid;gap:18px}
+  label{font-family:'Spline Sans Mono',monospace;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--sage);display:block;margin-bottom:6px}
+  input[type=text],input[type=email],select,textarea{
+    width:100%;padding:13px 14px;font-family:'Karla',sans-serif;font-size:16px;color:var(--ink);
+    background:#fff;border:1px solid var(--rule);border-radius:4px;
+  }
+  input:focus,select:focus,textarea:focus{border-color:var(--marigold);outline:none;box-shadow:0 0 0 3px color-mix(in srgb,var(--marigold) 25%,transparent)}
+  button.cta{cursor:pointer;font-size:14px;width:fit-content;border:1.5px solid var(--ink)}
+  .altmail{margin-top:18px;font-size:15px;color:var(--sage)}
+
+  footer{border-top:1px solid var(--rule);background:var(--panel)}
+  .foot{max-width:var(--max);margin:0 auto;padding:34px 24px;display:flex;flex-wrap:wrap;gap:18px;justify-content:space-between;align-items:baseline}
+  .foot .fb{font-family:'Young Serif',serif;font-size:17px}
+  .foot .tag{font-family:'Spline Sans Mono',monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--sage)}
+  .foot nav a{margin-left:18px;font-size:14px}
+
+  .reveal{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s ease}
+  .reveal.in{opacity:1;transform:none}
+
+  @media (max-width:820px){
+    .svc{grid-template-columns:44px 1fr;grid-template-rows:auto auto}
+    .svc p{grid-column:2}
+    .steps{grid-template-columns:1fr 1fr}
+    .step:nth-child(2){border-right:none}
+    .step:nth-child(-n+2){border-bottom:1px solid var(--rule)}
+    .about-grid{grid-template-columns:1fr}
+    .portrait{max-width:220px}
+  }
+  @media (max-width:520px){
+    .steps{grid-template-columns:1fr}
+    .step{border-right:none;border-bottom:1px solid var(--rule)}
+    .step:last-child{border-bottom:none}
+    .hero{padding:64px 0 56px}
+  }
+</style>
+</head>
+<body id="top">
+
+<header>
+  <div class="nav">
+    <a class="brand" href="#top">Jared B. Fries<span>consulting</span></a>
+    <span class="loc">San Francisco, CA</span>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+
+    <div class="hero">
+      <p class="kicker">Systems that protect the warmth</p>
+      <h1>Great at your craft. Buried in <span class="hl">everything else<svg viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path d="M2 7 Q 25 2, 50 6 T 98 5"/></svg></span>.</h1>
+      <p class="lede">I'm Jared. I help small business owners replace duct-taped processes and expensive software subscriptions with systems that run quietly in the background — so the day feels calm and you get back to the work you love.</p>
+      <a class="cta" href="#contact">Tell me about your mess</a>
+    </div>
+
+    <section class="thesis reveal">
+      <span class="tab">Small business, calmly run</span>
+      <div style="padding-top:34px">
+        <p>Good systems clear the noise, protect the human parts of the work, and make room for your craft. <b>Built with you, not around you.</b></p>
+      </div>
+    </section>
+
+    <section class="services reveal" id="services">
+      <span class="tab">Services</span>
+      <div class="svc">
+        <span class="idx">S—01</span>
+        <h3>Operations Design &amp; Founder Systems</h3>
+        <p>Enrollment, intake, rostering, compliance, communications, dashboards, and automation — built in the tools your team already uses.</p>
+      </div>
+      <div class="svc">
+        <span class="idx">S—02</span>
+        <h3>Partnerships, Contracts &amp; Privacy</h3>
+        <p>Practitioner-level process design for DPAs, MSAs, RFPs, district procurement, student privacy, and repeatable contracting.</p>
+      </div>
+      <div class="svc">
+        <span class="idx">S—03</span>
+        <h3>Playbooks, Enablement &amp; Training</h3>
+        <p>Rollout kits, onboarding, help centers, training, and coaching that turn team knowledge into systems that stick.</p>
+      </div>
+      <div class="svc">
+        <span class="idx">S—04</span>
+        <h3>AI-Powered Systems &amp; Tools</h3>
+        <p>Practical automations, lightweight tools, reporting, dashboards, and AI policies focused on saving real hours and reducing risk.</p>
+      </div>
+    </section>
+
+    <section class="proof reveal">
+      <span class="tab">Trusted by</span>
+      <div class="quotecard">
+        <blockquote>Before working with Jared, I was losing hours every month to manual work like invoicing, rosters, and family communications. Jared built new systems with our team, not for us, and months later everything still runs without him. I'm back on the floor with kids, enrollment feels warmer to families, and we avoided thousands of dollars of software subscriptions.</blockquote>
+        <p class="attrib"><b>Jen Silver</b> · Founder &amp; Executive Director, Tiny Giants Schools</p>
+      </div>
+    </section>
+
+    <section class="process reveal">
+      <span class="tab">How I work</span>
+      <div class="steps">
+        <div class="step">
+          <span class="idx">01</span>
+          <h3>Discovery</h3>
+          <p>Understand how the organization really runs — the workarounds, inbox chaos, and knowledge living in people's heads.</p>
+        </div>
+        <div class="step">
+          <span class="idx">02</span>
+          <h3>Co-Creation</h3>
+          <p>Design with the people who will use the system, in tools they already know and trust.</p>
+        </div>
+        <div class="step">
+          <span class="idx">03</span>
+          <h3>Build &amp; Prototype</h3>
+          <p>Ship working systems quickly, test them inside real operations, and refine them with evidence.</p>
+        </div>
+        <div class="step">
+          <span class="idx">04</span>
+          <h3>Transfer &amp; Scale</h3>
+          <p>Document, train, and hand off the system so it keeps working long after the engagement ends.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="about reveal">
+      <span class="tab">About the founder</span>
+      <div class="about-grid">
+        <div class="portrait" role="img" aria-label="Jared B. Fries">JBF</div>
+        <div>
+          <h3>Operator. Educator. System builder.</h3>
+          <p>Jared B. Fries has spent 15+ years building the systems that help organizations grow — across classrooms, school leadership, district administration, and small business operations.</p>
+          <p>His approach pairs the human side of change with the discipline of durable systems, shaped by an M.Ed. from Harvard University and a B.A. from the University of Pennsylvania.</p>
+          <p>He brings that full-table perspective to small business owners facing operational complexity, process friction, and growth that can no longer run on heroic effort.</p>
+          <p class="grove">Summers, you'll find him working the gates at Stern Grove Festival, helping make live music free and open to all of San Francisco.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="contact reveal" id="contact">
+      <span class="tab">Tell me about your mess</span>
+      <h2>Build the system your work deserves.</h2>
+      <p class="sub">Bring the duct-taped process, the software bill, or the part of the week that always feels harder than it should. We'll find a calmer way through it.</p>
+
+      <!-- Form posts to Formspree (free tier). Create a form at formspree.io,
+           then replace YOUR_FORM_ID below with the ID they give you. -->
+      <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+        <div>
+          <label for="name">Name</label>
+          <input type="text" id="name" name="name" required autocomplete="name">
+        </div>
+        <div>
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required autocomplete="email">
+        </div>
+        <div>
+          <label for="org">Organization</label>
+          <input type="text" id="org" name="organization" autocomplete="organization">
+        </div>
+        <div>
+          <label for="interest">What work are you interested in?</label>
+          <select id="interest" name="interest">
+            <option>Operations design &amp; founder systems</option>
+            <option>Partnerships, contracts &amp; privacy</option>
+            <option>Playbooks, enablement &amp; training</option>
+            <option>AI-powered systems &amp; tools</option>
+            <option>Not sure yet — let's talk</option>
+          </select>
+        </div>
+        <div>
+          <label for="msg">What's the mess?</label>
+          <textarea id="msg" name="message" rows="4"></textarea>
+        </div>
+        <button class="cta" type="submit">Book an intro call</button>
+      </form>
+      <p class="altmail">Prefer email? <a href="mailto:jared@jaredbfries.com">jared@jaredbfries.com</a></p>
+    </section>
+
+  </div>
+</main>
+
+<footer>
+  <div class="foot">
+    <div>
+      <div class="fb">Jared B. Fries Consulting</div>
+      <div class="tag">Systems that protect the warmth</div>
+    </div>
+    <nav>
+      <span class="tag">San Francisco, CA</span>
+      <a href="https://www.linkedin.com/in/jaredbfries/">LinkedIn</a>
+      <a href="#top">Back to top</a>
+    </nav>
+  </div>
+  <div style="text-align:center;padding:0 24px 22px;font-family:'Spline Sans Mono',monospace;font-size:12px;color:var(--sage)">© 2026 Jared B Fries Consulting LLC</div>
+</footer>
+
+<script>
+  // gentle scroll-in reveal; respects reduced motion via CSS override
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
