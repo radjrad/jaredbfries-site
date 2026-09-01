@@ -296,11 +296,11 @@
       const sel=document.getElementById('interest');
       if(sel&&[...sel.options].some(o=>o.value===m[1])) sel.value=m[1];
     }
-    if(location.hash.startsWith('#contact')) document.getElementById('contact').scrollIntoView();
+    // instant, not smooth: a smooth animation here gets canceled by the browser's own post-load scroll
+    if(location.hash.startsWith('#contact')) document.getElementById('contact').scrollIntoView({behavior:'instant'});
   }
   applyInterest();
-  // the browser restores its own scroll after load; re-apply so #contact?interest= arrivals land on the form
-  addEventListener('load',()=>setTimeout(applyInterest,80));
+  addEventListener('load',()=>setTimeout(applyInterest,120));
   addEventListener('hashchange',applyInterest);
 </script>
 </body>
