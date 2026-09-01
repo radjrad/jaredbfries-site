@@ -254,19 +254,27 @@
   document.querySelectorAll('section[id]').forEach(s=>tabIO.observe(s));
 
 
-  // ?interest= pre-select for the contact form; works in the query string or after #contact
-  function applyInterest(){
+  // deep links: pre-select contact interest, then scroll to the hash target.
+  // Tries a smooth scroll; if the browser cancels it (some environments do), jumps instantly.
+  function goHash(){
     const m=(location.search+location.hash).match(/[?&]interest=([\w-]+)/);
     if(m){
       const sel=document.getElementById('interest');
       if(sel&&[...sel.options].some(o=>o.value===m[1])) sel.value=m[1];
     }
-    // instant, not smooth: a smooth animation here gets canceled by the browser's own post-load scroll
-    if(location.hash.startsWith('#contact')) document.getElementById('contact').scrollIntoView({behavior:'instant'});
+    const id=(location.hash.match(/^#([\w-]+)/)||[])[1];
+    if(!id) return;
+    const el=document.getElementById(id);
+    if(!el) return;
+    const y0=scrollY;
+    el.scrollIntoView({behavior:'smooth'});
+    setTimeout(()=>{
+      if(Math.abs(scrollY-y0)<40 && Math.abs(el.getBoundingClientRect().top)>160) el.scrollIntoView({behavior:'instant'});
+    },250);
   }
-  applyInterest();
-  addEventListener('load',()=>setTimeout(applyInterest,120));
-  addEventListener('hashchange',applyInterest);
+  goHash();
+  addEventListener('load',()=>setTimeout(goHash,120));
+  addEventListener('hashchange',goHash);
 </script>
 </body>
 </html>
