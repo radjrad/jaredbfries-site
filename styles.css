@@ -283,7 +283,7 @@
   .thesis-line2{display:flex;align-items:center;gap:56px;flex-wrap:wrap;margin-top:36px}
   .compass{width:190px;flex:0 0 auto}
   .compass text{font-family:'Spline Sans Mono',monospace;font-size:11px;letter-spacing:.08em;fill:var(--sage);text-transform:uppercase}
-  .calibrated{font-family:'Young Serif',serif;font-size:clamp(30px,4.5vw,44px);color:var(--marigold);line-height:1.1}
+  .thesis p.calibrated{font-family:'Young Serif',serif;font-size:clamp(30px,4.5vw,44px);color:var(--marigold);line-height:1.1;max-width:none}
   @media (max-width:820px){
     .hero{grid-template-columns:1fr}
     .hero-art{display:none}
