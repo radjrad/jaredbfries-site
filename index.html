@@ -22,188 +22,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Karla:ital,wght@0,400;0,500;0,700;1,400&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --ink:#26302b;          /* deep green-black: text */
-    --ground:#f6f4ed;       /* warm paper */
-    --panel:#efece1;        /* slightly deeper paper for panels */
-    --rule:#d8d4c5;         /* ledger rule lines */
-    --marigold:#c98a1b;     /* accent: highlights, links */
-    --sage:#5d6f57;         /* secondary: labels, quiet accents */
-    --max:1060px;
-  }
-  *{box-sizing:border-box;margin:0;padding:0}
-  html{scroll-behavior:smooth}
-  @media (prefers-reduced-motion:reduce){
-    html{scroll-behavior:auto}
-    .reveal{opacity:1 !important;transform:none !important;transition:none !important}
-  }
-  body{
-    font-family:'Karla',sans-serif;
-    background:var(--ground);
-    color:var(--ink);
-    line-height:1.6;
-    font-size:17px;
-  }
-  .wrap{max-width:var(--max);margin:0 auto;padding:0 24px}
-  a{color:var(--marigold);text-decoration-thickness:1.5px;text-underline-offset:3px}
-  a:hover{color:var(--ink)}
-  :focus-visible{outline:3px solid var(--marigold);outline-offset:3px;border-radius:2px}
-
-  /* filing-tab section labels — the site's organizing motif.
-     Each tab sits on top of its own rule line, like a manila folder tab. */
-  .tabrow{border-bottom:1px solid var(--rule)}
-  .tab{
-    display:inline-block;
-    font-family:'Spline Sans Mono',monospace;
-    font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;
-    color:var(--sage);
-    border:1px solid var(--rule);
-    border-bottom:none;
-    background:var(--panel);
-    padding:8px 18px 6px;
-    border-radius:8px 8px 0 0;
-    position:relative;top:1px;
-  }
-  section[id]{scroll-margin-top:110px}
-
-  h1,h2{font-family:'Young Serif',serif;font-weight:400;line-height:1.12;letter-spacing:-0.01em}
-
-  /* header */
-  header{position:sticky;top:0;background:color-mix(in srgb,var(--ground) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--rule);z-index:10}
-  .nav{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:14px 24px 0;max-width:var(--max);margin:0 auto}
-  .brand{font-family:'Young Serif',serif;font-size:25px;color:var(--ink);text-decoration:none;padding-bottom:10px}
-  .brand-name{font-family:'Young Serif',serif;font-size:1.12em;color:var(--ink)}
-  .brand span{font-family:'Spline Sans Mono',monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--sage);margin-left:8px}
-  /* header tab selector — small folder tabs sitting on the header's bottom edge */
-  .tabnav{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
-  .tabnav a{
-    font-family:'Spline Sans Mono',monospace;font-size:11px;letter-spacing:.09em;text-transform:uppercase;
-    color:var(--sage);text-decoration:none;white-space:nowrap;
-    border:1px solid var(--rule);border-bottom:none;border-radius:7px 7px 0 0;
-    background:var(--panel);padding:6px 11px 5px;
-  }
-  .tabnav a:hover{color:var(--ink)}
-  .tabnav a.active{background:var(--ground);color:var(--ink)}
-
-  /* hero */
-  .hero{padding:88px 0 72px}
-  .hero .kicker{font-family:'Spline Sans Mono',monospace;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--sage);margin-bottom:22px}
-  .hero h1{font-size:clamp(38px,6vw,64px);max-width:15ch}
-  .hero h1 .hl{position:relative;white-space:nowrap}
-  .hero h1 .hl svg{position:absolute;left:0;bottom:-0.12em;width:100%;height:.28em;overflow:visible}
-  .hero h1 .hl path{fill:none;stroke:var(--marigold);stroke-width:5;stroke-linecap:round}
-  .hero p.lede{margin-top:26px;font-size:19px;max-width:56ch}
-  .cta{
-    display:inline-block;margin-top:34px;
-    font-family:'Spline Sans Mono',monospace;font-size:14px;letter-spacing:.08em;text-transform:uppercase;
-    color:var(--ground);background:var(--ink);text-decoration:none;
-    padding:15px 26px;border-radius:4px;border:1.5px solid var(--ink);
-  }
-  .cta:hover{background:var(--marigold);border-color:var(--marigold);color:var(--ink)}
-  .cta.ghost{background:transparent;color:var(--ink)}
-  .cta.ghost:hover{background:var(--ink);color:var(--ground)}
-
-  .thesis{padding:0 0 64px}
-  .thesis p{font-family:'Young Serif',serif;font-size:clamp(20px,2.6vw,26px);line-height:1.45;max-width:34ch;color:var(--sage)}
-  .thesis p b{color:var(--ink);font-weight:400}
-
-  /* services: ledger list */
-  .services{padding:0 0 76px}
-  .svc{display:grid;grid-template-columns:64px 1fr 1.4fr;gap:20px;padding:30px 0;border-bottom:1px solid var(--rule);align-items:baseline}
-  .svc:first-of-type{border-top:1px solid var(--rule);margin-top:34px}
-  .svc .icon{width:30px;height:30px;color:var(--sage);align-self:start;position:relative;top:2px}
-  .svc:hover .icon{color:var(--marigold)}
-  .svc h3{font-family:'Young Serif',serif;font-weight:400;font-size:22px;line-height:1.25}
-  .svc p{color:#4a544d}
-  .svc:hover{background:var(--panel)}
-
-  /* proof */
-  .proof{padding:0 0 76px}
-  .quotecard{
-    background:var(--panel);border:1px solid var(--rule);border-radius:6px;
-    padding:42px 44px;position:relative;height:100%;
-  }
-  .quotecard:before{content:"“";font-family:'Young Serif',serif;font-size:84px;line-height:0;color:var(--marigold);position:absolute;top:44px;left:-4px;transform:translateX(-50%)}
-  blockquote{font-family:'Young Serif',serif;font-size:clamp(18px,2.3vw,22px);line-height:1.5}
-  .attrib{margin-top:22px;font-family:'Spline Sans Mono',monospace;font-size:13px;letter-spacing:.05em;color:var(--sage)}
-  .attrib b{color:var(--ink);font-weight:500}
-  .quotecard .client-logo{display:block;height:52px;width:auto;margin-bottom:26px}
-  /* testimonial carousel */
-  .car{margin-top:34px;max-width:850px;margin-left:-30px}
-  .car-viewport{overflow:hidden}
-  .car-track{display:flex;transition:transform .55s cubic-bezier(.4,0,.2,1)}
-  @media (prefers-reduced-motion:reduce){.car-track{transition:none}}
-  .quote-slide{flex:0 0 100%;padding-left:30px}
-  .car-controls{display:flex;gap:10px;align-items:center;margin-top:20px;padding-left:30px}
-  .car-btn{
-    width:38px;height:38px;border:1px solid var(--rule);background:var(--panel);border-radius:50%;
-    cursor:pointer;color:var(--ink);font-family:'Karla',sans-serif;font-size:19px;line-height:1;
-    display:flex;align-items:center;justify-content:center;padding-bottom:3px;
-  }
-  .car-btn:hover{background:var(--marigold);border-color:var(--marigold)}
-  .car-count{font-family:'Spline Sans Mono',monospace;font-size:12px;letter-spacing:.08em;color:var(--sage)}
-
-  /* process */
-  .process{padding:0 0 76px}
-  .steps{margin-top:34px;display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--rule);border-radius:6px;overflow:hidden}
-  .step{padding:28px 24px;border-right:1px solid var(--rule);background:var(--ground)}
-  .step:last-child{border-right:none}
-  .step .idx{font-family:'Spline Sans Mono',monospace;font-size:12px;color:var(--marigold);letter-spacing:.12em}
-  .step h3{font-family:'Young Serif',serif;font-weight:400;font-size:19px;margin:10px 0 8px}
-  .step p{font-size:15px;color:#4a544d}
-
-  /* about */
-  .about{padding:0 0 76px}
-  .about-grid{display:grid;grid-template-columns:200px 1fr;gap:44px;margin-top:34px;align-items:start}
-  .portrait{
-    aspect-ratio:4/5;background:var(--panel);border:1px solid var(--rule);border-radius:6px;
-    display:flex;align-items:center;justify-content:center;
-    font-family:'Young Serif',serif;font-size:44px;color:var(--sage);
-  }
-  .about h3{font-family:'Young Serif',serif;font-weight:400;font-size:clamp(24px,3vw,30px);margin-bottom:18px}
-  .about p{max-width:62ch;margin-bottom:16px}
-  .about .grove{color:var(--sage);font-style:italic}
-
-  /* contact */
-  .contact{padding:0 0 88px}
-  .contact h2{font-size:clamp(28px,4vw,40px);margin-top:34px;max-width:18ch}
-  .contact .sub{margin-top:16px;max-width:56ch}
-  form{margin-top:36px;max-width:560px;display:grid;gap:18px}
-  label{font-family:'Spline Sans Mono',monospace;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--sage);display:block;margin-bottom:6px}
-  input[type=text],input[type=email],select,textarea{
-    width:100%;padding:13px 14px;font-family:'Karla',sans-serif;font-size:16px;color:var(--ink);
-    background:#fff;border:1px solid var(--rule);border-radius:4px;
-  }
-  input:focus,select:focus,textarea:focus{border-color:var(--marigold);outline:none;box-shadow:0 0 0 3px color-mix(in srgb,var(--marigold) 25%,transparent)}
-  button.cta{cursor:pointer;font-size:14px;width:fit-content;border:1.5px solid var(--ink)}
-  .altmail{margin-top:18px;font-size:15px;color:var(--sage)}
-
-  footer{border-top:1px solid var(--rule);background:var(--panel)}
-  .foot{max-width:var(--max);margin:0 auto;padding:34px 24px;display:flex;flex-wrap:wrap;gap:18px;justify-content:space-between;align-items:baseline}
-  .foot .fb{font-family:'Young Serif',serif;font-size:17px}
-  .foot .tag{font-family:'Spline Sans Mono',monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--sage)}
-  .foot nav a{margin-left:18px;font-size:14px}
-
-  .reveal{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s ease}
-  .reveal.in{opacity:1;transform:none}
-
-  @media (max-width:820px){
-    .svc{grid-template-columns:44px 1fr;grid-template-rows:auto auto}
-    .svc p{grid-column:2}
-    .steps{grid-template-columns:1fr 1fr}
-    .step:nth-child(2){border-right:none}
-    .step:nth-child(-n+2){border-bottom:1px solid var(--rule)}
-    .about-grid{grid-template-columns:1fr}
-    .portrait{max-width:220px}
-  }
-  @media (max-width:520px){
-    .steps{grid-template-columns:1fr}
-    .step{border-right:none;border-bottom:1px solid var(--rule)}
-    .step:last-child{border-bottom:none}
-    .hero{padding:64px 0 56px}
-  }
-</style>
+<link rel="stylesheet" href="/styles.css">
 </head>
 <body id="top">
 
@@ -213,6 +32,7 @@
     <nav class="tabnav" aria-label="Sections">
       <a href="#philosophy">Philosophy</a>
       <a href="#services">Services</a>
+      <a href="/packages">Packages</a>
       <a href="#proof">Trusted By</a>
       <a href="#process">How I Work</a>
       <a href="#about">About</a>
@@ -260,6 +80,57 @@
         <h3>AI-Powered Systems &amp; Tools</h3>
         <p>Practical automations, lightweight tools, reporting, dashboards, and AI policies focused on saving real hours and reducing risk.</p>
       </div>
+    </section>
+
+    <section class="featured band reveal">
+      <div class="tabrow"><span class="tab">Featured project</span></div>
+      <div class="featured-grid">
+        <div>
+          <h2 class="band-h">Tiny Giants Schools: three sites, one founder, and a wait pool nobody could see.</h2>
+          <p>When I met Jen, she was running two preschools and opening a third, and every system in the building ran through her. Invoices went out one family at a time. Applications lived in three documents from two different eras, and nobody could say how many families were waiting. Mornings started with ninety minutes of inbox. The sign-in sheets wouldn't have survived a licensing visit.</p>
+          <p>We built the fix together, in the Google Workspace she already paid for. One roster that's true, feeding invoicing, sign-in sheets, and contact groups. One enrollment tracker holding every application the school has ever received, with a waitlist she can pull from by age and start date. An application where returning families skip the fee. Six calendars that tell the right people the right things. An inbox that sorts itself. A "Coming Soon" launch for the third site. And a how-to binder, so her directors run all of it without me.</p>
+          <p class="readmore"><a href="/work/tiny-giants">Read the full story →</a></p>
+        </div>
+        <div>
+          <div class="stat-row">
+            <div class="stat"><span class="num">Under 10 min</span><span class="lbl">monthly invoicing, start to sent</span></div>
+            <div class="stat"><span class="num">3 sites</span><span class="lbl">running from one roster</span></div>
+            <div class="stat"><span class="num">0</span><span class="lbl">new software subscriptions</span></div>
+            <div class="stat"><span class="num">Line by line</span><span class="lbl">Title 22 sign-in compliance</span></div>
+          </div>
+          <div class="quotecard">
+            <blockquote>Before working with Jared, I was losing hours every month to manual work like invoicing, rosters, and family communications. Jared built new systems with our team, not for us, and months later everything still runs without him. I'm back on the floor with kids, enrollment feels warmer to families, and we avoided thousands of dollars of software subscriptions.</blockquote>
+            <p class="attrib"><b>Jen Silver</b> · Founder &amp; Executive Director, Tiny Giants Schools</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="start band reveal">
+      <div class="tabrow"><span class="tab">Three ways to start</span></div>
+      <p class="band-sub">Everything I build is in the tools you already own, with the people who'll run it, and documented so it keeps working after I'm gone.</p>
+      <div class="pkg-grid">
+        <div class="pkg-card">
+          <h3>The Walkthrough</h3>
+          <p class="body">One day at your school, on your schedule. I watch drop-off, sit with your director, walk the rooms, and stay through the midday crunch. You get a plain-language map of where the hours go, and one fix shipped that same week.</p>
+          <p class="price">$1,500 · credited toward any build within 60 days</p>
+          <a class="cta" href="/#contact?interest=walkthrough">Book a Walkthrough</a>
+        </div>
+        <div class="pkg-card">
+          <span class="pill">Most schools start here</span>
+          <h3>Back on the Floor</h3>
+          <p class="body">Your school's operating system. One true roster. Ten-minute invoicing. Sign-in sheets that are ready when licensing knocks. A calendar that delegates, an inbox that sorts itself, and a binder so your directors run it. Three weeks, and your mornings are yours again.</p>
+          <p class="price">from $8,500</p>
+          <a class="cta" href="/#contact?interest=back-on-the-floor">Get my mornings back</a>
+        </div>
+        <div class="pkg-card">
+          <h3>From Hello to Enrolled</h3>
+          <p class="body">Every application you've ever received, in one tracker you can trust. A waitlist you can pull from by age and start date. A form where returning families skip the fee. And every family knowing where they stand.</p>
+          <p class="price">from $9,500</p>
+          <a class="cta" href="/#contact?interest=hello-to-enrolled">Find every family</a>
+        </div>
+      </div>
+      <p class="pkg-foot">Not sure which? <a href="/#contact">Tell me about your mess and I'll tell you where I'd start.</a> · Or <a href="/packages">see every package →</a></p>
     </section>
 
     <section class="proof reveal" id="proof">
@@ -320,15 +191,15 @@
     </section>
 
     <section class="about reveal" id="about">
-      <div class="tabrow"><span class="tab">About the founder</span></div>
+      <div class="tabrow"><span class="tab">About</span></div>
       <div class="about-grid">
         <img class="portrait" src="headshot.jpg" alt="Jared B. Fries" style="object-fit:cover;object-position:top;width:100%">
         <div>
-          <h3>Operator. Educator. System builder.</h3>
-          <p><span class="brand-name">Jared B. Fries</span> has spent 15+ years building the systems that help organizations grow — across classrooms, school leadership, district administration, and mission-driven operations.</p>
-          <p>His approach pairs the human side of change with the discipline of durable systems, shaped by an M.Ed. from Harvard University and a B.A. from the University of Pennsylvania.</p>
-          <p>He brings that full-table perspective to mission-driven organizations facing operational complexity, process friction, and growth that can no longer run on heroic effort.</p>
-          <p class="grove">Summers, you'll find him working at the Stern Grove Festival, helping make live music free and open to all in San Francisco.</p>
+          <h3>I've sat in most of the seats at your table.</h3>
+          <p>I started in classrooms, then ran schools, then worked in district administration. So I know what it's like to be the person everything routes through, and how fast the work you love gets buried under the everything-else. For 15+ years I've built the systems that let organizations grow without losing what made them good.</p>
+          <p>That's why I work the way I do: in the tools you already own, with the people who'll run it, documented so it keeps working after I'm gone. At Tiny Giants in San Francisco, that meant a founder who went from hours of monthly invoicing to ten minutes, a wait pool she could finally see end to end, and a third site launching on systems her directors run themselves.</p>
+          <p>I care about your craft first. The systems are just how we protect it.</p>
+          <p class="grove">Harvard M.Ed., Penn B.A. Summers, you'll find me at the Stern Grove Festival, helping keep live music free for everyone in San Francisco.</p>
         </div>
       </div>
     </section>
@@ -356,11 +227,13 @@
         <div>
           <label for="interest">What work are you interested in?</label>
           <select id="interest" name="interest">
-            <option>Operations design &amp; founder systems</option>
-            <option>Partnerships, contracts &amp; privacy</option>
-            <option>Playbooks, enablement &amp; training</option>
-            <option>AI-powered systems &amp; tools</option>
-            <option>Not sure yet — let's talk</option>
+            <option value="" selected disabled hidden>Select one…</option>
+            <option value="walkthrough">The Walkthrough (one day on site)</option>
+            <option value="back-on-the-floor">Back on the Floor (school operating system)</option>
+            <option value="hello-to-enrolled">From Hello to Enrolled (enrollment &amp; waitlist)</option>
+            <option value="one-package">One package (I'll say which in the message)</option>
+            <option value="runs-without-you">Runs Without You (owner-run business)</option>
+            <option value="not-sure">Not sure yet — let's talk</option>
           </select>
         </div>
         <div>
@@ -415,6 +288,18 @@
   goSlide(0);
   document.querySelector('.car-prev').addEventListener('click',()=>goSlide(-1));
   document.querySelector('.car-next').addEventListener('click',()=>goSlide(1));
+
+  // ?interest= pre-select for the contact form; works in the query string or after #contact
+  function applyInterest(){
+    const m=(location.search+location.hash).match(/[?&]interest=([\w-]+)/);
+    if(m){
+      const sel=document.getElementById('interest');
+      if(sel&&[...sel.options].some(o=>o.value===m[1])) sel.value=m[1];
+    }
+    if(location.hash.startsWith('#contact')) document.getElementById('contact').scrollIntoView();
+  }
+  applyInterest();
+  addEventListener('hashchange',applyInterest);
 </script>
 </body>
 </html>
