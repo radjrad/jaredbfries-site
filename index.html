@@ -267,6 +267,7 @@
   // gentle scroll-in reveal; respects reduced motion via CSS override
   const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});
   document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+  document.querySelectorAll('.reveal').forEach(el=>{if(el.getBoundingClientRect().top<innerHeight)el.classList.add('in')});
 
   // header tab selector: highlight the tab for the section in view
   const tabLinks=[...document.querySelectorAll('.tabnav a')];
