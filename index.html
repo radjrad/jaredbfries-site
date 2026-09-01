@@ -34,7 +34,6 @@
       <a href="#services">Services</a>
       <a href="/work/tiny-giants">Case Studies</a>
       <a href="/packages">Packages</a>
-      <a href="#proof">Trusted By</a>
       <a href="#process">How I Work</a>
       <a href="#about">About</a>
       <a href="#contact">Contact</a>
@@ -100,8 +99,8 @@
       <div class="featured-grid">
         <div>
           <h2 class="band-h">Tiny Giants Schools: three sites, one founder, and a wait pool nobody could see.</h2>
-          <p>When I met Jen, she was running two preschools and opening a third, and every system in the building ran through her. Invoices went out one family at a time. Applications lived in three documents from two different eras, and nobody could say how many families were waiting. Mornings started with ninety minutes of inbox. The sign-in sheets wouldn't have survived a licensing visit.</p>
-          <p>We built the fix together, in the Google Workspace she already paid for. One roster that's true, feeding invoicing, sign-in sheets, and contact groups. One enrollment tracker holding every application the school has ever received, with a waitlist she can pull from by age and start date. An application where returning families skip the fee. Six calendars that tell the right people the right things. An inbox that sorts itself. A "Coming Soon" launch for the third site. And a how-to binder, so her directors run all of it without me.</p>
+          <p>When I met Jen, she was running two of the leading preschool and daycare centers in San Francisco and planning to open a third site. Every system in the building ran through her. Invoices went out one family at a time. Applications lived in three documents from two different eras, and nobody could say how many families were waiting. Mornings started with ninety minutes of inbox rather than the warmth on the floor that connected her to her families, students, and staff.</p>
+          <p>We built the fix together, in the Google Workspace she already paid for. One roster that's a source of truth, feeding invoicing, compliance-ready sign-in sheets, and contact groups. One enrollment tracker holding every application the school has ever received, with a waitlist she can pull from by age and start date. A streamlined application that is relevant and supportive for new families. Six calendars that tell the right people the right things. An inbox that sorts itself. A "Coming Soon" launch for the third site. And a how-to binder, so her directors run all of it without me.</p>
           <p class="readmore"><a href="/work/tiny-giants">Read the full story →</a></p>
         </div>
         <div>
@@ -109,10 +108,11 @@
             <div class="stat"><span class="num">Under 10 min</span><span class="lbl">monthly invoicing, start to sent</span></div>
             <div class="stat"><span class="num">3 sites</span><span class="lbl">running from one roster</span></div>
             <div class="stat"><span class="num">0</span><span class="lbl">new software subscriptions</span></div>
-            <div class="stat"><span class="num">Line by line</span><span class="lbl">Title 22 sign-in compliance</span></div>
+            <div class="stat"><span class="num">$20k saved</span><span class="lbl">3-years of software</span></div>
           </div>
           <div class="quotecard">
-            <blockquote>I'm back on the floor with kids, enrollment feels warmer to families, and we avoided thousands of dollars of software subscriptions.</blockquote>
+            <img class="client-logo" src="tiny-giants-logo.png" alt="Tiny Giants Schools">
+            <blockquote>Jared expanded the possibilities of how smooth my business can run.</blockquote>
             <p class="attrib"><b>Jen Silver</b> · Founder &amp; Executive Director, Tiny Giants Schools</p>
           </div>
         </div>
@@ -139,36 +139,6 @@
       <p class="pkg-foot">Everything I build is yours. No per-child fees, no per-seat fees, no renewal call. · <a href="/packages">See every package →</a></p>
     </section>
 
-    <section class="proof reveal" id="proof">
-      <div class="tabrow"><span class="tab">Trusted by</span></div>
-      <div class="car">
-        <div class="car-viewport">
-          <div class="car-track">
-            <figure class="quote-slide">
-              <div class="quotecard">
-                <img class="client-logo" src="tiny-giants-logo.png" alt="Tiny Giants Schools">
-                <blockquote>Before working with Jared, I was losing hours every month to manual work like invoicing, rosters, and family communications. Jared built new systems with our team, not for us, and months later everything still runs without him. I'm back on the floor with kids, enrollment feels warmer to families, and we avoided thousands of dollars of software subscriptions.</blockquote>
-                <p class="attrib"><b>Jen Silver</b> · Founder &amp; Executive Director, Tiny Giants Schools</p>
-              </div>
-            </figure>
-            <figure class="quote-slide">
-              <div class="quotecard">
-                <img class="client-logo" src="tiny-giants-logo.png" alt="Tiny Giants Schools">
-                <blockquote>Jared expanded the possibilities of how smooth my business can run.</blockquote>
-                <p class="attrib"><b>Jen Silver</b> · Founder &amp; Executive Director, Tiny Giants Schools</p>
-              </div>
-            </figure>
-            <!-- To add a testimonial: duplicate a figure.quote-slide block above this
-                 comment. The arrows and counter pick it up automatically. -->
-          </div>
-        </div>
-        <div class="car-controls">
-          <button class="car-btn car-prev" type="button" aria-label="Previous testimonial">&lsaquo;</button>
-          <button class="car-btn car-next" type="button" aria-label="Next testimonial">&rsaquo;</button>
-          <span class="car-count" aria-live="polite">1 / 1</span>
-        </div>
-      </div>
-    </section>
 
     <section class="process reveal" id="process">
       <div class="tabrow"><span class="tab">How I work</span></div>
@@ -283,19 +253,6 @@
   }),{rootMargin:'-35% 0px -55% 0px'});
   document.querySelectorAll('section[id]').forEach(s=>tabIO.observe(s));
 
-  // testimonial carousel
-  const track=document.querySelector('.car-track');
-  const slides=[...track.children].filter(el=>el.matches('.quote-slide'));
-  const count=document.querySelector('.car-count');
-  let ci=0;
-  function goSlide(d){
-    ci=(ci+d+slides.length)%slides.length;
-    track.style.transform=`translateX(-${ci*100}%)`;
-    count.textContent=`${ci+1} / ${slides.length}`;
-  }
-  goSlide(0);
-  document.querySelector('.car-prev').addEventListener('click',()=>goSlide(-1));
-  document.querySelector('.car-next').addEventListener('click',()=>goSlide(1));
 
   // ?interest= pre-select for the contact form; works in the query string or after #contact
   function applyInterest(){
