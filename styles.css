@@ -280,9 +280,9 @@
   .hero-art{justify-self:end;align-self:end;width:100%;max-width:440px}
   .hero-art svg,.hero-art img{width:100%;height:auto;display:block}
   .featured .quotecard{height:auto}
-  .thesis .mapbg{margin-top:30px;background:#f1ead9 url('/map-texture.jpg') center/cover no-repeat;border:1px solid var(--rule);border-radius:6px;padding:36px 38px 42px}
-  .thesis .lead{max-width:none;font-size:clamp(15px,1.6vw,17.5px);white-space:nowrap}
-  @media (max-width:980px){.thesis .lead{white-space:normal;font-size:clamp(17px,2.4vw,20px)}}
+  .thesis .lead{max-width:none;margin:0 0 10px}
+  .thesis .step-c{text-align:center}
+  .thesis .step-r{text-align:right;margin-bottom:0}
   .thesis-line2{display:flex;align-items:center;gap:56px;flex-wrap:wrap;margin-top:36px}
   .compass{width:280px;height:auto;flex:0 0 auto;mix-blend-mode:multiply}
   .thesis p.calibrated{font-family:'Young Serif',serif;font-size:clamp(30px,4.5vw,44px);color:var(--marigold);line-height:1.1;max-width:none}
