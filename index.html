@@ -299,6 +299,8 @@
     if(location.hash.startsWith('#contact')) document.getElementById('contact').scrollIntoView();
   }
   applyInterest();
+  // the browser restores its own scroll after load; re-apply so #contact?interest= arrivals land on the form
+  addEventListener('load',()=>setTimeout(applyInterest,80));
   addEventListener('hashchange',applyInterest);
 </script>
 </body>
