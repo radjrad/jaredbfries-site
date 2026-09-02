@@ -29,13 +29,14 @@
 <header>
   <div class="nav">
     <a class="brand" href="#top">Jared B. Fries<span>consulting</span></a>
-    <nav class="tabnav" aria-label="Sections">
-      <a href="#philosophy">Philosophy</a>
+    <button class="menu-btn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="sitenav"><span></span><span></span><span></span></button>
+    <nav class="tabnav" id="sitenav" aria-label="Sections">
+      <a href="#about">About</a>
       <a href="#services">Services</a>
-      <a href="#featured">Case Studies</a>
+      <a href="#featured">Featured Project</a>
       <a href="#process">How I Work</a>
       <a href="#packages">Packages</a>
-      <a href="#about">About</a>
+      <a href="#team">Team</a>
       <a href="#contact">Contact</a>
     </nav>
   </div>
@@ -59,8 +60,8 @@
       </div>
     </div>
 
-    <section class="thesis reveal" id="philosophy">
-      <div class="tabrow"><span class="tab">Business Philosophy</span></div>
+    <section class="thesis reveal" id="about">
+      <div class="tabrow"><span class="tab">About</span></div>
       <div style="padding-top:34px">
         <p class="lead step-l">Good systems clear the noise (clarity),</p>
         <p class="lead step-c">protect the human dimension (usability),</p>
@@ -110,10 +111,10 @@
         </div>
         <div>
           <div class="stat-row">
-            <div class="stat"><span class="num">Under 5 min</span><span class="lbl">monthly invoicing, start to sent</span></div>
+            <div class="stat"><span class="num">&lt;&thinsp;5 min</span><span class="lbl">monthly invoicing, start to sent</span></div>
             <div class="stat"><span class="num">3 sites</span><span class="lbl">running from one roster</span></div>
-            <div class="stat"><span class="num">0</span><span class="lbl">new software subscriptions</span></div>
-            <div class="stat"><span class="num">$20k saved</span><span class="lbl">3-years of software</span></div>
+            <div class="stat"><span class="num">0 risk</span><span class="lbl">systems you own completely</span></div>
+            <div class="stat"><span class="num">$20k saved</span><span class="lbl">3 years of software subscriptions avoided</span></div>
           </div>
           <div class="quotecard">
             <img class="client-logo" src="tiny-giants-logo.png" alt="Tiny Giants Schools">
@@ -151,7 +152,7 @@
     </section>
     <section class="start band reveal" id="packages">
       <div class="tabrow"><span class="tab">Packages</span></div>
-      <p class="band-sub">Fixed price. Fixed scope. Built in the tools you already pay for. Pick your door.</p>
+      <p class="band-sub">Fixed price. Fixed scope. Built in the tools you already pay for.</p>
       <div class="door-grid">
         <a class="door" href="/packages/education">
           <span class="eyebrow">For preschools, childcare centers &amp; small schools</span>
@@ -162,28 +163,29 @@
         <a class="door" href="/packages/small-business">
           <span class="eyebrow">For owner-run businesses</span>
           <h2>Runs Without You</h2>
-          <p>For owners who want a business that works when they step away. For a week, or for good.</p>
+          <p>For owners who want a business that works when they step away.</p>
+          <p>For a week on vacation, or for good when you exit.</p>
           <span class="arrow">Enter →</span>
         </a>
       </div>
-      <p class="pkg-foot">Everything I build is yours. No per-child fees, no per-seat fees, no renewal call. · <a href="/packages">See every package →</a></p>
+      <p class="pkg-foot">Everything I build is yours. No licensing fees, no per-seat fees, no friction, no risk.<span class="sep"> · </span><a class="pkg-link" href="/packages">See every package →</a></p>
     </section>
 
 
 
-    <section class="about reveal" id="about">
-      <div class="tabrow"><span class="tab">About</span></div>
+    <section class="about reveal" id="team">
+      <div class="tabrow"><span class="tab">Team</span></div>
       <div class="about-grid">
         <div>
           <img class="portrait" src="headshot.jpg" alt="Jared B. Fries" style="object-fit:cover;object-position:top;width:100%">
-          <p class="edu">Harvard M.Ed.<br>Penn B.A.</p>
+          <p class="edu"><span class="role">Founder &amp; CEO</span><br>Education: Harvard M.Ed., Penn B.A.</p>
         </div>
         <div>
           <h3>I've sat in most of the seats at your table.</h3>
-          <p>I started in classrooms, then ran schools, then worked in district administration. So I know what it's like to be the person everything routes through, and how fast the work you love gets buried under the everything-else. For 15+ years I've built the systems that let organizations grow without losing what made them good.</p>
+          <p>I followed my family legacy as a third-generation educator, starting as a teacher before moving into school and district leadership, then supporting schools in nonprofit organizations and education technology. So I know what it's like to be the person everything routes through, and how fast the work you love gets buried under the everything-else. For 15+ years I've built the systems that let organizations grow without losing what made them good.</p>
           <p>That's why I work the way I do: in the tools you already own, with the people who'll run it, documented so it keeps working after I'm gone.</p>
           <p>I care about your craft first. The systems are just how we protect it.</p>
-          <p class="grove">Summers, you'll find me at the Stern Grove Festival, helping keep live music free for everyone in San Francisco.</p>
+          <p class="grove">Summers, you'll find me at the Stern Grove Festival, helping keep live music free for everyone.</p>
         </div>
       </div>
     </section>
@@ -208,16 +210,15 @@
           <label for="org">Organization</label>
           <input type="text" id="org" name="organization" autocomplete="organization">
         </div>
-        <div>
-          <label for="interest">What work are you interested in?</label>
-          <select id="interest" name="interest">
-            <option>Operations design &amp; founder systems</option>
-            <option>Compliance</option>
-            <option>Playbooks, enablement &amp; training</option>
-            <option>AI-powered systems &amp; tools</option>
-            <option>Not sure yet — let's talk</option>
-          </select>
-        </div>
+        <fieldset class="checks" id="interest">
+          <legend>What work are you interested in? <span class="hint">(pick any)</span></legend>
+          <label><input type="checkbox" name="interest" value="Operations design &amp; founder systems"> Operations design &amp; founder systems</label>
+          <label><input type="checkbox" name="interest" value="Compliance"> Compliance</label>
+          <label><input type="checkbox" name="interest" value="Playbooks, enablement &amp; training"> Playbooks, enablement &amp; training</label>
+          <label><input type="checkbox" name="interest" value="AI-powered systems &amp; tools"> AI-powered systems &amp; tools</label>
+          <label><input type="checkbox" name="interest" value="Not sure yet — let's talk"> Not sure yet — let's talk</label>
+          <input type="hidden" name="package" id="package" value="">
+        </fieldset>
         <div>
           <label for="msg">What's the mess?</label>
           <textarea id="msg" name="message" rows="4"></textarea>
@@ -239,6 +240,7 @@
     <nav>
       <span class="tag">San Francisco, CA</span>
       <a href="https://www.linkedin.com/in/jaredbfries/">LinkedIn</a>
+      <a href="https://github.com/radjrad">GitHub</a>
       <a href="#top">Back to top</a>
     </nav>
   </div>
@@ -259,13 +261,13 @@
   document.querySelectorAll('section[id]').forEach(s=>tabIO.observe(s));
 
 
-  // deep links: pre-select contact interest, then scroll to the hash target.
+  // deep links: record which package the visitor came from (hidden field), then scroll to the hash target.
   // Tries a smooth scroll; if the browser cancels it (some environments do), jumps instantly.
   function goHash(){
     const m=(location.search+location.hash).match(/[?&]interest=([\w-]+)/);
     if(m){
-      const sel=document.getElementById('interest');
-      if(sel&&[...sel.options].some(o=>o.value===m[1])) sel.value=m[1];
+      const pkg=document.getElementById('package');
+      if(pkg) pkg.value=m[1];
     }
     const id=(location.hash.match(/^#([\w-]+)/)||[])[1];
     if(!id) return;
@@ -280,6 +282,15 @@
   goHash();
   addEventListener('load',()=>setTimeout(goHash,120));
   addEventListener('hashchange',goHash);
+
+  // mobile menu
+  const menuBtn=document.querySelector('.menu-btn'),siteNav=document.getElementById('sitenav');
+  if(menuBtn&&siteNav){
+    const setOpen=o=>{document.body.classList.toggle('nav-open',o);menuBtn.setAttribute('aria-expanded',o);menuBtn.setAttribute('aria-label',o?'Close menu':'Open menu')};
+    menuBtn.addEventListener('click',()=>setOpen(!document.body.classList.contains('nav-open')));
+    siteNav.addEventListener('click',e=>{if(e.target.closest('a'))setOpen(false)});
+    addEventListener('keydown',e=>{if(e.key==='Escape')setOpen(false)});
+  }
 </script>
 </body>
 </html>

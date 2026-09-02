@@ -26,13 +26,14 @@
 <header>
   <div class="nav">
     <a class="brand" href="/">Jared B. Fries<span>consulting</span></a>
-    <nav class="tabnav" aria-label="Sections">
-      <a href="/#philosophy">Philosophy</a>
+    <button class="menu-btn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="sitenav"><span></span><span></span><span></span></button>
+    <nav class="tabnav" id="sitenav" aria-label="Sections">
+      <a href="/#about">About</a>
       <a href="/#services">Services</a>
-      <a href="/#featured">Case Studies</a>
+      <a href="/#featured">Featured Project</a>
       <a href="/#process">How I Work</a>
       <a href="/#packages" class="active">Packages</a>
-      <a href="/#about">About</a>
+      <a href="/#team">Team</a>
       <a href="/#contact">Contact</a>
     </nav>
   </div>
@@ -356,6 +357,7 @@
     <nav>
       <span class="tag">San Francisco, CA</span>
       <a href="https://www.linkedin.com/in/jaredbfries/">LinkedIn</a>
+      <a href="https://github.com/radjrad">GitHub</a>
       <a href="/">Home</a>
     </nav>
   </div>
@@ -366,6 +368,15 @@
   const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});
   document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
   document.querySelectorAll('.reveal').forEach(el=>{if(el.getBoundingClientRect().top<innerHeight)el.classList.add('in')});
+
+  // mobile menu
+  const menuBtn=document.querySelector('.menu-btn'),siteNav=document.getElementById('sitenav');
+  if(menuBtn&&siteNav){
+    const setOpen=o=>{document.body.classList.toggle('nav-open',o);menuBtn.setAttribute('aria-expanded',o);menuBtn.setAttribute('aria-label',o?'Close menu':'Open menu')};
+    menuBtn.addEventListener('click',()=>setOpen(!document.body.classList.contains('nav-open')));
+    siteNav.addEventListener('click',e=>{if(e.target.closest('a'))setOpen(false)});
+    addEventListener('keydown',e=>{if(e.key==='Escape')setOpen(false)});
+  }
 </script>
 </body>
 </html>
