@@ -185,6 +185,7 @@
   /* section band headers reuse .tabrow/.tab */
   .band{padding:0 0 76px}
   .band-sub{margin-top:30px;max-width:60ch;color:#4a544d}
+  .band-sub+.band-sub{margin-top:12px}
   .band-h{font-family:'Young Serif',serif;font-weight:400;font-size:clamp(24px,3.2vw,32px);line-height:1.2;margin-top:34px;max-width:24ch}
 
   /* featured project */
@@ -303,7 +304,7 @@
 
   /* ——— mobile menu, team meta, contact checkboxes, mobile polish ——— */
   .menu-btn{display:none}
-  .edu .role{color:var(--ink);font-weight:500}
+  .edu .name{display:block;font-family:'Young Serif',serif;font-size:19px;letter-spacing:0;color:var(--ink);line-height:1.3;margin-bottom:6px}
   .stat .num{white-space:nowrap}
   .checks{border:none;padding:0;margin:0;min-width:0}
   .checks legend{font-family:'Spline Sans Mono',monospace;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--sage);margin-bottom:10px;padding:0}
