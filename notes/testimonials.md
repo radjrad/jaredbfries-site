@@ -13,3 +13,11 @@ Cloudflare deploy via .assetsignore.
 5. As a small business owner, nothing is more valuable than time and Jared keeps finding ways to buy time back so I can focus on what I do best.
 6. People go into business because they are passionate about what they do and running the business can take you away from that! Jared keeps building and helping me implement systems that are going to free me up to keep doing what I love!
 7. Jared is efficient, a great communicator, and consistently turns around his deliverables in a timely manner.
+
+## Stitched drafts sent to Jen for editing (2026-09-02, not yet approved)
+
+Full:
+People go into business because they're passionate about what they do, and running the business can take you away from that. As a small business owner, nothing is more valuable than time, and Jared keeps finding ways to buy it back so I can focus on what I do best. He's smart and intuitive and knew exactly what I needed before I even did. He isn't trying to change everything. He validates what already works and makes it more efficient. He's a great communicator, turns things around quickly, and honestly, working with him feels like a warm hug. My work with Jared has been invaluable and has far exceeded my expectations.
+
+Short:
+As a small business owner, nothing is more valuable than time, and Jared keeps finding ways to buy it back so I can focus on what I do best. He knew exactly what I needed before I even did, and he isn't trying to change everything. He makes what already works, work better. Working with him feels like a warm hug.
