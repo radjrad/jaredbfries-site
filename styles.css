@@ -341,7 +341,7 @@
     section[id]{scroll-margin-top:84px}
 
     /* about: three centered lines, one line each */
-    .thesis .lead,.thesis .step-c,.thesis .step-r{text-align:center;white-space:nowrap;font-size:clamp(13px,4vw,20px);margin:0 0 8px}
+    .thesis .lead,.thesis .step-c,.thesis .step-r{text-align:center;white-space:normal;text-wrap:balance;font-size:clamp(15px,4.4vw,20px);margin:0 0 10px}
     .thesis .step-r{margin-bottom:0}
 
     /* packages footer: link on its own line */
