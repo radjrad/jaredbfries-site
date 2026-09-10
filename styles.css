@@ -239,14 +239,23 @@
   .door-grid.three .door h2{font-size:24px;line-height:1.2;min-height:2.4em}
   .door-grid.three .door p{font-size:15.5px}
   .door-grid.three .door .arrow{margin-top:auto;padding-top:18px}
-  /* past-project logo strip */
-  .logo-strip{display:flex;align-items:center;flex-wrap:wrap;gap:18px 48px;margin-top:34px;padding-top:24px;border-top:1px solid var(--rule)}
-  .logo-label{font-family:'Spline Sans Mono',monospace;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--sage);flex:0 0 100%}
-  .logo-strip img{height:64px;width:auto;max-width:340px;object-fit:contain;mix-blend-mode:multiply;transition:filter .2s ease,opacity .2s ease}
-  .logo-strip img.logo-tall{height:110px}
-  .logo-strip img.logo-mid{height:84px}
-  .logo-strip img:hover{filter:grayscale(1);opacity:.6}
-  @media (max-width:640px){.logo-strip{gap:18px 26px}.logo-strip img{height:44px;max-width:240px}.logo-strip img.logo-tall{height:78px}.logo-strip img.logo-mid{height:58px}}
+  /* past-project logo column beside the edtech hero */
+  .hero-logos-layout{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:56px;align-items:center}
+  .logo-stack{display:flex;flex-direction:column;align-items:center;gap:34px;padding:34px 24px;border-left:1px solid var(--rule)}
+  .logo-label{font-family:'Spline Sans Mono',monospace;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--sage)}
+  .logo-stack img{width:auto;max-width:100%;object-fit:contain;mix-blend-mode:multiply;transition:filter .2s ease,opacity .2s ease}
+  .logo-stack img.logo-wide{width:260px}
+  .logo-stack img.logo-mid{width:220px}
+  .logo-stack img.logo-tall{width:170px}
+  .logo-stack img:hover{filter:grayscale(1);opacity:.6}
+  @media (max-width:820px){
+    .hero-logos-layout{grid-template-columns:1fr;gap:28px}
+    .logo-stack{flex-direction:row;flex-wrap:wrap;justify-content:center;gap:22px 36px;border-left:none;border-top:1px solid var(--rule);padding:26px 0 0}
+    .logo-label{flex:0 0 100%;text-align:center}
+    .logo-stack img.logo-wide{width:200px}
+    .logo-stack img.logo-mid{width:150px}
+    .logo-stack img.logo-tall{width:110px}
+  }
   .door:hover{border-color:var(--marigold)}
   .door:hover .arrow{transform:translateX(6px)}
 
