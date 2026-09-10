@@ -242,7 +242,9 @@
   /* past-project logo strip */
   .logo-strip{display:flex;align-items:center;flex-wrap:wrap;gap:14px 34px;margin-top:30px;padding-top:24px;border-top:1px solid var(--rule)}
   .logo-label{font-family:'Spline Sans Mono',monospace;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--sage);flex:0 0 100%}
-  .logo-strip img{height:34px;width:auto;max-width:170px;object-fit:contain;filter:grayscale(1);opacity:.7;transition:filter .2s ease,opacity .2s ease}
+  .logo-strip img{height:36px;width:auto;max-width:190px;object-fit:contain;mix-blend-mode:multiply;filter:grayscale(1);opacity:.7;transition:filter .2s ease,opacity .2s ease}
+  .logo-strip img.logo-tall{height:60px}
+  .logo-strip img.logo-mid{height:46px}
   .logo-strip img:hover{filter:none;opacity:1}
   .door:hover{border-color:var(--marigold)}
   .door:hover .arrow{transform:translateX(6px)}
