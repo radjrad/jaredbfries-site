@@ -199,9 +199,11 @@
       <h2>Build the system your work deserves.</h2>
       <p class="sub">Bring the founder-led process, the software bill, or the part of the week that always feels harder than it should. We'll find a calmer way through it.</p>
 
-      <!-- Form posts to Formspree (free tier). Create a form at formspree.io,
-           then replace YOUR_FORM_ID below with the ID they give you. -->
-      <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+      <!-- Form posts to a Google Apps Script web app that appends a row to the
+           "Website Leads" Google Sheet and emails Jared. Script source, setup steps,
+           and the cutover checklist live in notes/contact-form/README.md.
+           Replace APPS_SCRIPT_DEPLOYMENT_ID with the deployed web app URL (ends in /exec). -->
+      <form action="https://script.google.com/macros/s/APPS_SCRIPT_DEPLOYMENT_ID/exec" method="post">
         <div>
           <label for="name">Name</label>
           <input type="text" id="name" name="name" required autocomplete="name">
@@ -216,20 +218,32 @@
         </div>
         <fieldset class="checks" id="interest">
           <legend>What work are you interested in? <span class="hint">(pick any)</span></legend>
-          <label><input type="checkbox" name="interest" value="Operations design &amp; founder systems"> Operations design &amp; founder systems</label>
-          <label><input type="checkbox" name="interest" value="Compliance"> Compliance</label>
-          <label><input type="checkbox" name="interest" value="Playbooks, enablement &amp; training"> Playbooks, enablement &amp; training</label>
-          <label><input type="checkbox" name="interest" value="AI-powered systems &amp; tools"> AI-powered systems &amp; tools</label>
-          <label><input type="checkbox" name="interest" value="Go-to-market &amp; field marketing (edtech)"> Go-to-market &amp; field marketing (edtech)</label>
-          <label><input type="checkbox" name="interest" value="Not sure yet — let's talk"> Not sure yet — let's talk</label>
-          <input type="hidden" name="package" id="package" value="">
+          <label><input type="checkbox" name="interest" value="operations"> Operations design &amp; founder systems</label>
+          <label><input type="checkbox" name="interest" value="compliance"> Compliance</label>
+          <label><input type="checkbox" name="interest" value="playbooks"> Playbooks, enablement &amp; training</label>
+          <label><input type="checkbox" name="interest" value="ai-tools"> AI-powered systems &amp; tools</label>
+          <label><input type="checkbox" name="interest" value="edtech-gtm"> Go-to-market &amp; field marketing (edtech)</label>
+          <label><input type="checkbox" name="interest" value="not-sure"> Not sure yet — let's talk</label>
         </fieldset>
         <div>
           <label for="msg">What's the mess?</label>
           <textarea id="msg" name="message" rows="4"></textarea>
         </div>
+        <!-- honeypot: off-screen (not display:none), humans never see or fill it -->
+        <div style="position:absolute;left:-9999px" aria-hidden="true">
+          <label for="website">Website</label>
+          <input type="text" id="website" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+        </div>
+        <input type="hidden" name="ts" id="ts" value="">
+        <input type="hidden" name="page" id="page" value="">
+        <input type="hidden" name="source" id="source" value="">
+        <input type="hidden" name="ua" id="ua" value="">
         <button class="cta" type="submit">Book an intro call</button>
+        <p class="altmail" id="form-error" role="alert" hidden></p>
       </form>
+      <div id="form-thanks" hidden>
+        <p class="sub"><b>Got it — thank you.</b> I read every message myself and I'll reply within a business day. If it's urgent, email me at <a href="mailto:jared@jaredbfries.com">jared@jaredbfries.com</a>.</p>
+      </div>
       <p class="altmail">Prefer email? <a href="mailto:jared@jaredbfries.com">jared@jaredbfries.com</a></p>
     </section>
 
@@ -266,13 +280,16 @@
   document.querySelectorAll('section[id]').forEach(s=>tabIO.observe(s));
 
 
-  // deep links: record which package the visitor came from (hidden field), then scroll to the hash target.
+  // deep links: record which package the visitor came from (hidden "source" field), pre-check a matching
+  // interest box if there is one, then scroll to the hash target.
   // Tries a smooth scroll; if the browser cancels it (some environments do), jumps instantly.
   function goHash(){
     const m=(location.search+location.hash).match(/[?&]interest=([\w-]+)/);
     if(m){
-      const pkg=document.getElementById('package');
-      if(pkg) pkg.value=m[1];
+      const src=document.getElementById('source');
+      if(src) src.value=m[1];
+      const box=document.querySelector('#interest input[type=checkbox][value="'+m[1]+'"]');
+      if(box) box.checked=true;
     }
     const id=(location.hash.match(/^#([\w-]+)/)||[])[1];
     if(!id) return;
@@ -287,6 +304,38 @@
   goHash();
   addEventListener('load',()=>setTimeout(goHash,120));
   addEventListener('hashchange',goHash);
+
+  // contact form: fetch POST to the Apps Script web app, inline thank-you state.
+  // Without JS the form still posts natively and lands on the script's {"ok":true} page.
+  const form=document.querySelector('#contact form');
+  if(form){
+    const btn=form.querySelector('[type="submit"]');
+    const errEl=document.getElementById('form-error');
+    const thanks=document.getElementById('form-thanks');
+    document.getElementById('ts').value=Date.now();
+    document.getElementById('page').value=location.pathname;
+    document.getElementById('ua').value=navigator.userAgent;
+    const showSuccess=()=>{form.style.display='none';thanks.hidden=false;thanks.scrollIntoView({behavior:'smooth',block:'center'})};
+    const showError=msg=>{errEl.textContent=msg;errEl.hidden=false};
+    form.addEventListener('submit',async ev=>{
+      ev.preventDefault();
+      errEl.hidden=true;
+      btn.disabled=true;
+      const original=btn.textContent;
+      btn.textContent='Sending…';
+      try{
+        const res=await fetch(form.action,{method:'POST',body:new FormData(form)});
+        let ok=true;
+        try{ok=(await res.json()).ok!==false}catch(_){/* opaque response: treat as sent */}
+        if(!ok) throw new Error('script rejected');
+        showSuccess();
+      }catch(err){
+        btn.disabled=false;
+        btn.textContent=original;
+        showError('Something went wrong. Email me at jared@jaredbfries.com and I\'ll reply today.');
+      }
+    });
+  }
 
   // mobile menu
   const menuBtn=document.querySelector('.menu-btn'),siteNav=document.getElementById('sitenav');
