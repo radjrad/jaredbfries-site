@@ -5,7 +5,7 @@
 // or the live /exec URL keeps serving the old code.
 
 const SHEET_NAME = 'Leads';
-const NOTIFY_EMAIL = 'jared@jaredbfries.com';
+const NOTIFY_EMAIL = 'fries.jared@gmail.com';  // the Gmail account itself, not the jaredbfries.com alias: that alias forwards back here and Gmail drops the duplicate
 const HONEYPOT_FIELD = 'website';   // hidden field; humans leave it blank
 const MIN_SECONDS_ON_PAGE = 3;      // bots submit instantly
 
