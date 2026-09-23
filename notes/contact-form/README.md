@@ -11,7 +11,7 @@ so it is never deployed.
 2. Add a header row in row 1, exactly:
    `Timestamp | Name | Email | Organization | Interest | Message | Source | Page | User Agent`
 3. Extensions > Apps Script. Delete the default code, paste `Code.gs`, save.
-4. Edit `NOTIFY_EMAIL` or `SHEET_NAME` at the top if needed.
+4. `NOTIFY_EMAIL` must be the Gmail account that owns the Sheet (`fries.jared@gmail.com`), not `jared@jaredbfries.com`. That alias forwards through Cloudflare Email Routing back to the same Gmail, and Gmail drops the forwarded copy as a duplicate of the one in Sent, so the alert never reaches the inbox.
 5. Deploy > New deployment > type **Web app**. Description `website form v1`.
    Execute as **Me**. Who has access **Anyone**. Deploy, authorize with the
    Gmail account that owns the Sheet, accept the "unverified app" warning.
