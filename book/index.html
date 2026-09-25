@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Book a call | Jared B. Fries Consulting</title>
+<meta name="description" content="Pick a time that works for you. Standard business hours, Pacific time, shown in your own time zone.">
+<meta property="og:title" content="Book a call | Jared B. Fries Consulting">
+<meta property="og:description" content="Pick a time that works for you. Standard business hours, Pacific time, shown in your own time zone.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://jaredbfries.com/book">
+<meta property="og:site_name" content="Jared B. Fries Consulting">
+<meta property="og:image" content="https://jaredbfries.com/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="robots" content="noindex">
+<link rel="canonical" href="https://jaredbfries.com/book">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Karla:ital,wght@0,400;0,500;0,700;1,400&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<link rel="stylesheet" href="/book/book.css">
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <a class="brand" href="/">Jared B. Fries<span>consulting</span></a>
+    <button class="menu-btn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="sitenav"><span></span><span></span><span></span></button>
+    <nav class="tabnav" id="sitenav" aria-label="Sections">
+      <a href="/#about">About</a>
+      <a href="/#services">Services</a>
+      <a href="/#featured">Trusted by</a>
+      <a href="/#process">How I Work</a>
+      <a href="/#packages">Packages</a>
+      <a href="/#bio">Bio</a>
+      <a href="/#contact" class="active">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap book" id="book"
+       data-api="https://script.google.com/macros/s/APPS_SCRIPT_DEPLOYMENT_ID/exec">
+    <!-- data-api is the Apps Script web app URL (ends in /exec). Setup: notes/booking/README.md -->
+
+    <div class="page-hero book-hero">
+      <p class="eyebrow">Book a call</p>
+      <h1>Pick a time. I'll bring the coffee.</h1>
+      <p class="sub">Standard business hours, Monday to Friday, Pacific time. Times below are shown in your time zone. You'll get a calendar invite and a confirmation email the moment you book.</p>
+    </div>
+
+    <ol class="steps" aria-label="Booking steps">
+      <li class="step" data-step="1"><span class="n">1</span>Meeting</li>
+      <li class="step" data-step="2"><span class="n">2</span>Time</li>
+      <li class="step" data-step="3"><span class="n">3</span>Details</li>
+      <li class="step" data-step="4"><span class="n">4</span>Done</li>
+    </ol>
+
+    <!-- Step 1: meeting type -->
+    <section class="panel" id="panel-type" data-panel="1">
+      <div class="tabrow"><span class="tab">What kind of call?</span></div>
+      <div class="types" id="types" role="list">
+        <p class="loading" id="types-loading">Loading…</p>
+      </div>
+    </section>
+
+    <!-- Step 2: date and time -->
+    <section class="panel" id="panel-time" data-panel="2" hidden>
+      <div class="tabrow"><span class="tab">When works for you?</span></div>
+      <div class="picker">
+        <div class="cal">
+          <div class="cal-head">
+            <button class="cal-nav" type="button" id="prev-month" aria-label="Previous month">‹</button>
+            <h2 class="cal-title" id="cal-title" aria-live="polite">Month</h2>
+            <button class="cal-nav" type="button" id="next-month" aria-label="Next month">›</button>
+          </div>
+          <div class="cal-grid" id="cal-grid" role="grid" aria-labelledby="cal-title"></div>
+          <p class="cal-note" id="cal-note" aria-live="polite"></p>
+          <div class="tzrow">
+            <label for="tz">Time zone</label>
+            <select id="tz"></select>
+          </div>
+        </div>
+        <div class="times">
+          <h3 class="times-title" id="times-title">Pick a day</h3>
+          <div class="slot-list" id="slot-list" aria-live="polite"></div>
+        </div>
+      </div>
+      <button class="back" type="button" data-back="1">← Change meeting type</button>
+    </section>
+
+    <!-- Step 3: details -->
+    <section class="panel" id="panel-details" data-panel="3" hidden>
+      <div class="tabrow"><span class="tab">Almost there</span></div>
+      <div class="details">
+        <aside class="summary" id="summary" aria-label="Your selection"></aside>
+        <form id="book-form" novalidate>
+          <div>
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" required autocomplete="name">
+          </div>
+          <div>
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required autocomplete="email">
+            <p class="hint-line">The calendar invite and confirmation go here.</p>
+          </div>
+          <div>
+            <label for="org">Organization <span class="opt">(optional)</span></label>
+            <input type="text" id="org" name="organization" autocomplete="organization">
+          </div>
+          <div>
+            <label for="notes">Anything I should know before we talk? <span class="opt">(optional)</span></label>
+            <textarea id="notes" name="notes" rows="4"></textarea>
+          </div>
+          <!-- honeypot: off-screen (not display:none), humans never see or fill it -->
+          <div style="position:absolute;left:-9999px" aria-hidden="true">
+            <label for="website">Website</label>
+            <input type="text" id="website" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+          </div>
+          <button class="cta" type="submit" id="confirm-btn">Confirm booking</button>
+          <p class="altmail" id="form-error" role="alert" hidden></p>
+        </form>
+      </div>
+      <button class="back" type="button" data-back="2">← Pick a different time</button>
+    </section>
+
+    <!-- Step 4: confirmation -->
+    <section class="panel" id="panel-done" data-panel="4" hidden>
+      <div class="tabrow"><span class="tab">You're booked</span></div>
+      <div class="done" id="done"></div>
+    </section>
+
+    <p class="altmail" id="global-error" role="alert" hidden></p>
+    <p class="altmail">Rather email? <a href="mailto:jared@jaredbfries.com">jared@jaredbfries.com</a></p>
+  </div>
+</main>
+
+<footer>
+  <div class="foot">
+    <div>
+      <div class="fb">Jared B. Fries Consulting</div>
+      <div class="tag">Systems that protect the warmth</div>
+    </div>
+    <nav>
+      <span class="tag">San Francisco, CA</span>
+      <a href="https://www.linkedin.com/in/jaredbfries/">LinkedIn</a>
+      <a href="https://github.com/radjrad">GitHub</a>
+      <a href="/">Home</a>
+    </nav>
+  </div>
+  <div style="text-align:center;padding:0 24px 22px;font-family:'Spline Sans Mono',monospace;font-size:12px;color:var(--sage)">© 2026 Jared B Fries Consulting LLC</div>
+</footer>
+
+<script src="/book/book.js" defer></script>
+<script>
+  // mobile menu (same as the other pages)
+  const menuBtn=document.querySelector('.menu-btn'),siteNav=document.getElementById('sitenav');
+  if(menuBtn&&siteNav){
+    const setOpen=o=>{document.body.classList.toggle('nav-open',o);menuBtn.setAttribute('aria-expanded',o);menuBtn.setAttribute('aria-label',o?'Close menu':'Open menu')};
+    menuBtn.addEventListener('click',()=>setOpen(!document.body.classList.contains('nav-open')));
+    siteNav.addEventListener('click',e=>{if(e.target.closest('a'))setOpen(false)});
+    addEventListener('keydown',e=>{if(e.key==='Escape')setOpen(false)});
+  }
+</script>
+</body>
+</html>
