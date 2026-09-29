@@ -4,7 +4,8 @@
 Auth: either the session's API credential for api.cloudflare.com injects the Authorization header
 (preferred, the token never enters the session), or CLOUDFLARE_API_TOKEN is set in the environment.
 The token needs Account > Account Analytics: Read.
-Discovers the account and Web Analytics site automatically, then prints a plain-text summary
+Discovers the account (REST) and the Web Analytics site tag (GraphQL, grouped by siteTag and
+requestHost) automatically, then prints a plain-text summary
 of the last 7 days vs the 7 days before: visits, page views, top pages, top referrers,
 top countries, and Core Web Vitals (p75).
 
@@ -48,15 +49,43 @@ def gql(query, variables):
         sys.exit("Cloudflare GraphQL error: " + json.dumps(body["errors"], indent=1))
     return body["data"]
 
-def find_site(host):
+SITE_QUERY = """
+query($acct:String!, $since:Time!, $until:Time!) {
+  viewer { accounts(filter:{accountTag:$acct}) {
+    sites: rumPageloadEventsAdaptiveGroups(limit:100, filter:{datetime_geq:$since, datetime_lt:$until}, orderBy:[count_DESC]) {
+      count dimensions { siteTag requestHost } }
+  } }
+}
+"""
+
+def norm_host(h):
+    h = (h or "").lower()
+    return h[4:] if h.startswith("www.") else h
+
+def find_site(host, lookback_days=30):
+    """Discover the Web Analytics site tag through GraphQL (grouped by siteTag and requestHost).
+
+    The REST rum/site_info endpoint needs a separate permission that an analytics-only token
+    lacks (it returns 403), while the GraphQL RUM datasets only need Account Analytics: Read.
+    """
     accounts = rest("/accounts")
+    want = norm_host(host)
     for acct in accounts:
-        sites = rest("/accounts/%s/rum/site_info/list" % acct["id"])
-        for s in sites:
-            if host in (s.get("host") or "", s.get("zone_tag") or "", s.get("site_tag") or ""):
-                return acct["id"], s["site_tag"], s.get("host") or host
-    sys.exit("No Web Analytics site matching %r found. Is Web Analytics enabled for the site? Accounts checked: %s"
-             % (host, [a.get("name") for a in accounts]))
+        since, until = window(lookback_days, dt.datetime.now(dt.timezone.utc) + dt.timedelta(days=1))
+        rows = gql(SITE_QUERY, {"acct": acct["id"], "since": since, "until": until})["viewer"]["accounts"]
+        rows = rows[0].get("sites", []) if rows else []
+        by_tag = {}
+        for r in rows:
+            d = r["dimensions"]
+            by_tag.setdefault(d["siteTag"], []).append((r["count"], d["requestHost"] or ""))
+        for tag, hosts in by_tag.items():
+            if any(norm_host(h) == want for _, h in hosts):
+                return acct["id"], tag, host
+        if len(by_tag) == 1:
+            tag, hosts = next(iter(by_tag.items()))
+            return acct["id"], tag, max(hosts)[1] or host
+    sys.exit("No Web Analytics site matching %r found in the last %d days. Is Web Analytics enabled for the site? "
+             "Accounts checked: %s" % (host, lookback_days, [a.get("name") for a in accounts]))
 
 QUERY = """
 query($acct:String!, $site:String!, $since:Time!, $until:Time!) {
@@ -96,7 +125,7 @@ def pct(cur, prev):
     if not prev: return "n/a"
     return "%+.0f%%" % ((cur - prev) / prev * 100)
 
-def ms(v): return "n/a" if v is None else "%.0f ms" % v
+def ms(v): return "n/a" if v is None or v < 0 else "%.0f ms" % (v / 1000)  # RUM timings are microseconds
 
 def main():
     ap = argparse.ArgumentParser()
