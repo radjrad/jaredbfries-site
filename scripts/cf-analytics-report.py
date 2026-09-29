@@ -1,0 +1,181 @@
+#!/usr/bin/env python3
+"""Weekly Cloudflare Web Analytics report for jaredbfries.com.
+
+Auth: either the session's API credential for api.cloudflare.com injects the Authorization header
+(preferred, the token never enters the session), or CLOUDFLARE_API_TOKEN is set in the environment.
+The token needs Account > Account Analytics: Read.
+Discovers the account (REST) and the Web Analytics site tag (GraphQL, grouped by siteTag and
+requestHost) automatically, then prints a plain-text summary
+of the last 7 days vs the 7 days before: visits, page views, top pages, top referrers,
+top countries, and Core Web Vitals (p75).
+
+Usage: python3 scripts/cf-analytics-report.py [--days 7] [--site jaredbfries.com] [--json]
+"""
+import argparse, datetime as dt, json, os, sys, urllib.error, urllib.request
+
+API = "https://api.cloudflare.com/client/v4"
+GQL = API + "/graphql"
+
+def headers(extra=None):
+    h = dict(extra or {})
+    t = os.environ.get("CLOUDFLARE_API_TOKEN")
+    if t:
+        h["Authorization"] = "Bearer " + t
+    return h
+
+def open_url(req, timeout):
+    try:
+        return urllib.request.urlopen(req, timeout=timeout)
+    except urllib.error.HTTPError as e:
+        if e.code in (401, 403):
+            sys.exit("Cloudflare returned HTTP %d. Check that the API credential for api.cloudflare.com "
+                     "(or CLOUDFLARE_API_TOKEN) is set and has Account Analytics: Read." % e.code)
+        raise
+
+def rest(path):
+    req = urllib.request.Request(API + path, headers=headers())
+    with open_url(req, 30) as r:
+        body = json.load(r)
+    if not body.get("success"):
+        sys.exit("Cloudflare REST error on %s: %s" % (path, body.get("errors")))
+    return body["result"]
+
+def gql(query, variables):
+    data = json.dumps({"query": query, "variables": variables}).encode()
+    req = urllib.request.Request(GQL, data=data, headers=headers({"Content-Type": "application/json"}))
+    with open_url(req, 60) as r:
+        body = json.load(r)
+    if body.get("errors"):
+        sys.exit("Cloudflare GraphQL error: " + json.dumps(body["errors"], indent=1))
+    return body["data"]
+
+SITE_QUERY = """
+query($acct:String!, $since:Time!, $until:Time!) {
+  viewer { accounts(filter:{accountTag:$acct}) {
+    sites: rumPageloadEventsAdaptiveGroups(limit:100, filter:{datetime_geq:$since, datetime_lt:$until}, orderBy:[count_DESC]) {
+      count dimensions { siteTag requestHost } }
+  } }
+}
+"""
+
+def norm_host(h):
+    h = (h or "").lower()
+    return h[4:] if h.startswith("www.") else h
+
+def find_site(host, lookback_days=30):
+    """Discover the Web Analytics site tag through GraphQL (grouped by siteTag and requestHost).
+
+    The REST rum/site_info endpoint needs a separate permission that an analytics-only token
+    lacks (it returns 403), while the GraphQL RUM datasets only need Account Analytics: Read.
+    """
+    accounts = rest("/accounts")
+    want = norm_host(host)
+    for acct in accounts:
+        since, until = window(lookback_days, dt.datetime.now(dt.timezone.utc) + dt.timedelta(days=1))
+        rows = gql(SITE_QUERY, {"acct": acct["id"], "since": since, "until": until})["viewer"]["accounts"]
+        rows = rows[0].get("sites", []) if rows else []
+        by_tag = {}
+        for r in rows:
+            d = r["dimensions"]
+            by_tag.setdefault(d["siteTag"], []).append((r["count"], d["requestHost"] or ""))
+        for tag, hosts in by_tag.items():
+            if any(norm_host(h) == want for _, h in hosts):
+                return acct["id"], tag, host
+        if len(by_tag) == 1:
+            tag, hosts = next(iter(by_tag.items()))
+            return acct["id"], tag, max(hosts)[1] or host
+    sys.exit("No Web Analytics site matching %r found in the last %d days. Is Web Analytics enabled for the site? "
+             "Accounts checked: %s" % (host, lookback_days, [a.get("name") for a in accounts]))
+
+QUERY = """
+query($acct:String!, $site:String!, $since:Time!, $until:Time!) {
+  viewer { accounts(filter:{accountTag:$acct}) {
+    total: rumPageloadEventsAdaptiveGroups(limit:1, filter:{siteTag:$site, datetime_geq:$since, datetime_lt:$until}) {
+      count sum { visits } }
+    byDay: rumPageloadEventsAdaptiveGroups(limit:31, filter:{siteTag:$site, datetime_geq:$since, datetime_lt:$until}, orderBy:[date_ASC]) {
+      count sum { visits } dimensions { date } }
+    byPath: rumPageloadEventsAdaptiveGroups(limit:15, filter:{siteTag:$site, datetime_geq:$since, datetime_lt:$until}, orderBy:[count_DESC]) {
+      count sum { visits } dimensions { requestPath } }
+    byRef: rumPageloadEventsAdaptiveGroups(limit:10, filter:{siteTag:$site, datetime_geq:$since, datetime_lt:$until}, orderBy:[count_DESC]) {
+      count sum { visits } dimensions { refererHost } }
+    byCountry: rumPageloadEventsAdaptiveGroups(limit:10, filter:{siteTag:$site, datetime_geq:$since, datetime_lt:$until}, orderBy:[count_DESC]) {
+      count sum { visits } dimensions { countryName } }
+    byDevice: rumPageloadEventsAdaptiveGroups(limit:5, filter:{siteTag:$site, datetime_geq:$since, datetime_lt:$until}, orderBy:[count_DESC]) {
+      count dimensions { deviceType } }
+    vitals: rumWebVitalsEventsAdaptiveGroups(limit:1, filter:{siteTag:$site, datetime_geq:$since, datetime_lt:$until}) {
+      count quantiles { largestContentfulPaintP75 cumulativeLayoutShiftP75 interactionToNextPaintP75 firstInputDelayP75 } }
+  } }
+}
+"""
+
+def window(days, end):
+    start = end - dt.timedelta(days=days)
+    return start.strftime("%Y-%m-%dT00:00:00Z"), end.strftime("%Y-%m-%dT00:00:00Z")
+
+def fetch(acct, site, days, end):
+    since, until = window(days, end)
+    d = gql(QUERY, {"acct": acct, "site": site, "since": since, "until": until})
+    return d["viewer"]["accounts"][0], since, until
+
+def totals(a):
+    t = (a.get("total") or [{}])[0]
+    return t.get("count", 0), (t.get("sum") or {}).get("visits", 0)
+
+def pct(cur, prev):
+    if not prev: return "n/a"
+    return "%+.0f%%" % ((cur - prev) / prev * 100)
+
+def ms(v): return "n/a" if v is None or v < 0 else "%.0f ms" % (v / 1000)  # RUM timings are microseconds
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--days", type=int, default=7)
+    ap.add_argument("--site", default="jaredbfries.com")
+    ap.add_argument("--json", action="store_true")
+    args = ap.parse_args()
+
+    acct, site_tag, host = find_site(args.site)
+    today = dt.datetime.now(dt.timezone.utc).replace(hour=0, minute=0, second=0, microsecond=0)
+    cur, since, until = fetch(acct, site_tag, args.days, today)
+    prev, psince, puntil = fetch(acct, site_tag, args.days, today - dt.timedelta(days=args.days))
+
+    if args.json:
+        print(json.dumps({"host": host, "window": [since, until], "current": cur,
+                          "previous_window": [psince, puntil], "previous": prev}, indent=1))
+        return
+
+    cv, cvis = totals(cur); pv, pvis = totals(prev)
+    print("Cloudflare Web Analytics for %s" % host)
+    print("Window: %s to %s (previous: %s to %s)\n" % (since[:10], until[:10], psince[:10], puntil[:10]))
+    print("Visits:     %6d  (%s vs previous)" % (cvis, pct(cvis, pvis)))
+    print("Page views: %6d  (%s vs previous)" % (cv, pct(cv, pv)))
+
+    print("\nBy day:")
+    for r in cur.get("byDay", []):
+        print("  %s  visits %4d  views %4d" % (r["dimensions"]["date"], r["sum"]["visits"], r["count"]))
+
+    def section(title, key, dim):
+        rows = cur.get(key, [])
+        if not rows: return
+        print("\n%s:" % title)
+        for r in rows:
+            label = r["dimensions"].get(dim) or "(direct / none)"
+            vis = (r.get("sum") or {}).get("visits")
+            print("  %-40s views %4d%s" % (label[:40], r["count"], "" if vis is None else "  visits %4d" % vis))
+
+    section("Top pages", "byPath", "requestPath")
+    section("Top referrers", "byRef", "refererHost")
+    section("Top countries", "byCountry", "countryName")
+    section("Devices", "byDevice", "deviceType")
+
+    v = (cur.get("vitals") or [{}])[0]
+    q = v.get("quantiles") or {}
+    if q:
+        print("\nCore Web Vitals (p75, %d samples):" % v.get("count", 0))
+        print("  LCP  %s   (good < 2500 ms)" % ms(q.get("largestContentfulPaintP75")))
+        print("  INP  %s   (good < 200 ms)" % ms(q.get("interactionToNextPaintP75")))
+        cls = q.get("cumulativeLayoutShiftP75")
+        print("  CLS  %s   (good < 0.1)" % ("n/a" if cls is None else "%.3f" % cls))
+
+if __name__ == "__main__":
+    main()
