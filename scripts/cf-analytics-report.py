@@ -1,27 +1,39 @@
 #!/usr/bin/env python3
 """Weekly Cloudflare Web Analytics report for jaredbfries.com.
 
-Reads CLOUDFLARE_API_TOKEN from the environment (token needs Account > Account Analytics: Read).
+Auth: either the session's API credential for api.cloudflare.com injects the Authorization header
+(preferred, the token never enters the session), or CLOUDFLARE_API_TOKEN is set in the environment.
+The token needs Account > Account Analytics: Read.
 Discovers the account and Web Analytics site automatically, then prints a plain-text summary
 of the last 7 days vs the 7 days before: visits, page views, top pages, top referrers,
 top countries, and Core Web Vitals (p75).
 
 Usage: python3 scripts/cf-analytics-report.py [--days 7] [--site jaredbfries.com] [--json]
 """
-import argparse, datetime as dt, json, os, sys, urllib.request
+import argparse, datetime as dt, json, os, sys, urllib.error, urllib.request
 
 API = "https://api.cloudflare.com/client/v4"
 GQL = API + "/graphql"
 
-def token():
+def headers(extra=None):
+    h = dict(extra or {})
     t = os.environ.get("CLOUDFLARE_API_TOKEN")
-    if not t:
-        sys.exit("CLOUDFLARE_API_TOKEN is not set. Add it to the environment settings (Edit > environment variables).")
-    return t
+    if t:
+        h["Authorization"] = "Bearer " + t
+    return h
+
+def open_url(req, timeout):
+    try:
+        return urllib.request.urlopen(req, timeout=timeout)
+    except urllib.error.HTTPError as e:
+        if e.code in (401, 403):
+            sys.exit("Cloudflare returned HTTP %d. Check that the API credential for api.cloudflare.com "
+                     "(or CLOUDFLARE_API_TOKEN) is set and has Account Analytics: Read." % e.code)
+        raise
 
 def rest(path):
-    req = urllib.request.Request(API + path, headers={"Authorization": "Bearer " + token()})
-    with urllib.request.urlopen(req, timeout=30) as r:
+    req = urllib.request.Request(API + path, headers=headers())
+    with open_url(req, 30) as r:
         body = json.load(r)
     if not body.get("success"):
         sys.exit("Cloudflare REST error on %s: %s" % (path, body.get("errors")))
@@ -29,9 +41,8 @@ def rest(path):
 
 def gql(query, variables):
     data = json.dumps({"query": query, "variables": variables}).encode()
-    req = urllib.request.Request(GQL, data=data, headers={
-        "Authorization": "Bearer " + token(), "Content-Type": "application/json"})
-    with urllib.request.urlopen(req, timeout=60) as r:
+    req = urllib.request.Request(GQL, data=data, headers=headers({"Content-Type": "application/json"}))
+    with open_url(req, 60) as r:
         body = json.load(r)
     if body.get("errors"):
         sys.exit("Cloudflare GraphQL error: " + json.dumps(body["errors"], indent=1))
